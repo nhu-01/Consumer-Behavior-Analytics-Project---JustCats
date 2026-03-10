@@ -18,5 +18,6 @@ df = pd.read_csv(sys.argv[1])
 
 # Remove NaN values
 
+df = df.dropna()
 
 # Remove columns with only one unique value
