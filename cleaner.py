@@ -1,3 +1,15 @@
+'''
+Student Name:
+Date:
+
+'''
+
+import os
+import pandas as pd
+import sys
+
+#Load the file
+
 # Remove NaN values
 
 
