@@ -9,12 +9,12 @@ import sys
 
 # Verify commandline arguments
 
-if len(sys.argv) < 2:
+if len(sys.argv) < 3:
     print(f"This file is used like this: 'python3 {__file__} [data.csv]'")
 
 # Load the file
 
-df = pd.read_csv(sys.argv[1])
+df = pd.read_csv(sys.argv[2])
 
 # Remove NaN values
 
