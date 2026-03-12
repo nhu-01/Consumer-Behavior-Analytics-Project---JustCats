@@ -16,19 +16,19 @@ if len(sys.argv) < 2:
 # Load the file
 
 dtype: dict = {
-    "System Trans. ID": int,
-    "HHID": int,
-    "GeoID": int,
+    "System Trans. ID": str,
+    "HHID": str,
+    "GeoID": str,
     "Trans Date": str,
-    "Distinct Pro": int,
-    "Basket Units": int,
-    "Basket Dollar": float,
+    "Distinct Pro": str,
+    "Basket Units": str,
+    "Basket Dollar": str,
     "Day-of-Week": str,
-    "Family Size": int,
+    "Family Size": str,
     "Race": str,
-    "Income": int,
+    "Income": str,
     "Home Ownership": str,
-    "Male Education": int,
+    "Male Education": str,
     "Male Occupation": str,
     "Female Age": str,
     "Female Work": str,
@@ -40,17 +40,17 @@ dtype: dict = {
     "Outlets": str,
     "UPC": str,
     "UPC Description": str,
-    "Category": int,
+    "Category": str,
     "Vendor": str,
     "Brand": str,
     "SKU Dollars": str,
     "SKU Units": str,
-    "Size": float,
-    "SizeUnit": int,
-    "Unnamed: 31": int,
-    "Unnamed: 32": str,
-    "Unnamed: 33": str,
-    "Unnamed: 34": str
+    "Size": str,
+    "SizeUnit": str,
+    "": str,
+    "": str,
+    "": str,
+    "": str
 }
 
 df = pd.read_csv(sys.argv[1], dtype=dtype)
@@ -58,5 +58,6 @@ df = pd.read_csv(sys.argv[1], dtype=dtype)
 # Remove NaN values
 
 df = df.dropna()
+print(df)
 
 # Remove columns with only one unique value
