@@ -53,11 +53,14 @@ dtype: dict = {
     "": str
 }
 
-df = pd.read_csv(sys.argv[1], dtype=dtype)
+df = pd.read_csv(sys.argv[1], dtype=dtype, low_memory=False, index_col = 0)
+
+unnamed_cols = [col for col in df.columns if 'Unnamed' in col]
+df.drop(columns=unnamed_cols, inplace=True)
 
 # Remove NaN values
 
 df = df.dropna()
-print(df)
+print(df.head())
 
 # Remove columns with only one unique value
