@@ -64,3 +64,12 @@ df = df.dropna()
 print(df.head())
 
 # Remove columns with only one unique value
+single_val_cols = [col for col in df.colummns if df[col].nunique() == 1]
+
+print("Single unique value columns:")
+print(single_val_cols)
+
+for col in single_value_cols:
+    print(f"{col}: {df[col].unique()}")
+
+df.drop(columns = single_val_cols, inplace = True)
