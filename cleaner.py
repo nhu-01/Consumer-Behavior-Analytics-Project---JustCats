@@ -73,3 +73,9 @@ for col in single_val_cols:
     print(f"{col}: {df[col].unique()}")
 
 df.drop(columns = single_val_cols, inplace = True)
+
+output_file = "cleaner.csv"
+
+df.to_csv(output_file, index = False)
+
+print(f"Exported cleaner dataset{output_file}")
