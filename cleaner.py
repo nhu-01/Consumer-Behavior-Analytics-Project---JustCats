@@ -9,8 +9,8 @@ import sys
 
 # Verify commandline arguments
 
-if len(sys.argv) < 2:
-    print(f"This file is used like this: 'python3 {__file__} [data.csv]'")
+if len(sys.argv) < 3:
+    print(f"This file is used like this: 'python3 {__file__} [data.csv] [clean.py]'")
     quit()
 
 # Load the file
@@ -74,7 +74,7 @@ for col in single_val_cols:
 
 df.drop(columns = single_val_cols, inplace = True)
 
-output_file = "cleaner.csv"
+output_file = sys.argv[2]
 
 df.to_csv(output_file, index = False)
 
