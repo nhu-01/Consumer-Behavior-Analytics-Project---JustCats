@@ -74,7 +74,7 @@ class KNN:
 
         pd.DataFrame(data=data).to_csv(filename, index=False)
 
-    def calculate(self, datapoint: dict, answerer):
+    def classify(self, datapoint: dict, answerer):
         point_value = self.evaluator(datapoint)
 
         step_size = len(self.data) // 2
@@ -116,6 +116,17 @@ class KNN:
 
         return answerer(neighbors)
 
+    def test(self, df: pd.DataFrame, answerer) -> float:
+        total: int = df.size
+        correct: int = 0
+        
+        for row in df.iterrows():
+            ans = self.classify(row[1], answerer)
+            if ans == row[1]["UPC"]:
+                correct += 1
+
+        return correct / total
+
 def largest_of(d: dict) -> str:
     largest: tuple[str, int] = ("none", 0)
 
@@ -147,6 +158,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 4:
         print(f"This file is used like this: 'python3 {__file__} train [data.csv] [model.csv]'")
         print(f"or like: python3 {__file__} classify [model.csv] k '{{\"Family Size\":3,\"GeoID\":5,\"Basket Units\":20,\"Basket Dollar\":90}}'")
+        print(f"or like: python3 {__file__} test [model.csv] k [test.csv]")
         quit()
     
     match sys.argv[1]:
@@ -163,7 +175,7 @@ if __name__ == "__main__":
             knn.train(pd.read_csv(sys.argv[2]))
             knn.save_to_csv(sys.argv[3])
 
-            print(f"Output {sys.argv[2]}")
+            print(f"Output {sys.argv[3]}")
 
         case "classify":
             knn: KNN = KNN(int(sys.argv[3]), lambda x: math.sqrt(
@@ -175,7 +187,22 @@ if __name__ == "__main__":
 
             knn.load_from_csv(sys.argv[2])
 
-            print(knn.calculate(
+            print(knn.classify(
                 json.loads(sys.argv[4]),
                 answerer
             ))
+
+        case "test":
+            knn: KNN = KNN(int(sys.argv[3]), lambda x: math.sqrt(
+                x["Family Size"] ** 2 +
+                x["GeoID"] ** 2 +
+                x["Basket Units"] ** 2 +
+                x["Basket Dollar"] ** 2
+            ))
+
+            knn.load_from_csv(sys.argv[2])
+
+            print(f"""Accuracy: {knn.test(
+                pd.read_csv(sys.argv[4]),
+                answerer
+            )}""")
