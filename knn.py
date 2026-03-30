@@ -161,48 +161,47 @@ if __name__ == "__main__":
         print(f"or like: python3 {__file__} test [model.csv] k [test.csv]")
         quit()
     
-    match sys.argv[1]:
-        case "train":
-            knn: KNN = KNN(0, lambda x: math.sqrt(
-                x["Family Size"] ** 2 +
-                x["GeoID"] ** 2 +
-                x["Basket Units"] ** 2 +
-                x["Basket Dollar"] ** 2
-            ))
+    if sys.argv[1] == "train":
+        knn: KNN = KNN(0, lambda x: math.sqrt(
+            x["Family Size"] ** 2 +
+            x["GeoID"] ** 2 +
+            x["Basket Units"] ** 2 +
+            x["Basket Dollar"] ** 2
+        ))
 
-            print("Training will take a moment!")
-            
-            knn.train(pd.read_csv(sys.argv[2]))
-            knn.save_to_csv(sys.argv[3])
+        print("Training will take a moment!")
+        
+        knn.train(pd.read_csv(sys.argv[2]))
+        knn.save_to_csv(sys.argv[3])
 
-            print(f"Output {sys.argv[3]}")
+        print(f"Output {sys.argv[3]}")
 
-        case "classify":
-            knn: KNN = KNN(int(sys.argv[3]), lambda x: math.sqrt(
-                x["Family Size"] ** 2 +
-                x["GeoID"] ** 2 +
-                x["Basket Units"] ** 2 +
-                x["Basket Dollar"] ** 2
-            ))
+    elif sys.argv[1] == "classify":
+        knn: KNN = KNN(int(sys.argv[3]), lambda x: math.sqrt(
+            x["Family Size"] ** 2 +
+            x["GeoID"] ** 2 +
+            x["Basket Units"] ** 2 +
+            x["Basket Dollar"] ** 2
+        ))
 
-            knn.load_from_csv(sys.argv[2])
+        knn.load_from_csv(sys.argv[2])
 
-            print(knn.classify(
-                json.loads(sys.argv[4]),
-                answerer
-            ))
+        print(knn.classify(
+            json.loads(sys.argv[4]),
+            answerer
+        ))
 
-        case "test":
-            knn: KNN = KNN(int(sys.argv[3]), lambda x: math.sqrt(
-                x["Family Size"] ** 2 +
-                x["GeoID"] ** 2 +
-                x["Basket Units"] ** 2 +
-                x["Basket Dollar"] ** 2
-            ))
+    elif sys.argv[1] == "test":
+        knn: KNN = KNN(int(sys.argv[3]), lambda x: math.sqrt(
+            x["Family Size"] ** 2 +
+            x["GeoID"] ** 2 +
+            x["Basket Units"] ** 2 +
+            x["Basket Dollar"] ** 2
+        ))
 
-            knn.load_from_csv(sys.argv[2])
+        knn.load_from_csv(sys.argv[2])
 
-            print(f"""Accuracy: {knn.test(
-                pd.read_csv(sys.argv[4]),
-                answerer
-            )}""")
+        print(f"""Accuracy: {knn.test(
+            pd.read_csv(sys.argv[4]),
+            answerer
+        )}""")
