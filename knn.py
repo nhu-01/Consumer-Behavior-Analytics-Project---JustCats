@@ -97,14 +97,14 @@ class KNN:
                     self.data[list_pos - left_move][0] - point_value
                 )
             else:
-                left_dist: int = sys.maxint
+                left_dist: int = sys.maxsize
 
             if list_pos + right_move < len(self.data):
                 right_dist: int = abs(
                     self.data[list_pos + right_move][0] - point_value
                 )
             else:
-                right_dist: int = sys.maxint
+                right_dist: int = sys.maxsize
 
             if right_dist < left_dist:
                 neighbors.append(self.data[list_pos + right_move])
