@@ -97,14 +97,14 @@ class KNN:
                     self.data[list_pos - left_move][0] - point_value
                 )
             else:
-                left_dist: int = sys.maxint
+                left_dist: int = sys.maxsize
 
             if list_pos + right_move < len(self.data):
                 right_dist: int = abs(
                     self.data[list_pos + right_move][0] - point_value
                 )
             else:
-                right_dist: int = sys.maxint
+                right_dist: int = sys.maxsize
 
             if right_dist < left_dist:
                 neighbors.append(self.data[list_pos + right_move])
@@ -154,47 +154,55 @@ def answerer(neighbors):
 
     return largest[0]
 
-if len(sys.argv) < 4:
-    print(f"This file is used like this: 'python3 {__file__} train [data.csv] [model.csv]'")
-    print(f"or like: python3 {__file__} classify [model.csv] k '{{\"Family Size\":3,\"GeoID\":5,\"Basket Units\":20,\"Basket Dollar\":90}}'")
-    print(f"or like: python3 {__file__} test [model.csv] k [test.csv]")
-    quit()
-
-if sys.argv[1] == "train":
-    knn: KNN = KNN(0, lambda x: math.sqrt(
-        x["Income"] **2 +
-        x["Basket Dollar"] ** 2
-    ))
-
-    print("Training will take a moment!")
+if __name__ == "__main__":
+    if len(sys.argv) < 4:
+        print(f"This file is used like this: 'python3 {__file__} train [data.csv] [model.csv]'")
+        print(f"or like: python3 {__file__} classify [model.csv] k '{{\"Family Size\":3,\"GeoID\":5,\"Basket Units\":20,\"Basket Dollar\":90}}'")
+        print(f"or like: python3 {__file__} test [model.csv] k [test.csv]")
+        quit()
     
-    knn.train(pd.read_csv(sys.argv[2]))
-    knn.save_to_csv(sys.argv[3])
+    match sys.argv[1]:
+        case "train":
+            knn: KNN = KNN(0, lambda x: math.sqrt(
+                x["Family Size"] ** 2 +
+                x["GeoID"] ** 2 +
+                x["Basket Units"] ** 2 +
+                x["Basket Dollar"] ** 2
+            ))
 
-    print(f"Output {sys.argv[3]}")
+            print("Training will take a moment!")
+            
+            knn.train(pd.read_csv(sys.argv[2]))
+            knn.save_to_csv(sys.argv[3])
 
-elif sys.argv[1] == "classify":
-    knn: KNN = KNN(int(sys.argv[3]), lambda x: math.sqrt(
-        x["Income"] **2 +
-        x["Basket Dollar"] ** 2
-    ))
+            print(f"Output {sys.argv[3]}")
 
-    knn.load_from_csv(sys.argv[2])
+        case "classify":
+            knn: KNN = KNN(int(sys.argv[3]), lambda x: math.sqrt(
+                x["Family Size"] ** 2 +
+                x["GeoID"] ** 2 +
+                x["Basket Units"] ** 2 +
+                x["Basket Dollar"] ** 2
+            ))
 
-    print(knn.classify(
-        json.loads(sys.argv[4]),
-        answerer
-    ))
+            knn.load_from_csv(sys.argv[2])
 
-elif sys.argv[1] == "test":
-    knn: KNN = KNN(int(sys.argv[3]), lambda x: math.sqrt(
-        x["Income"] **2 +
-        x["Basket Dollar"] ** 2
-    ))
+            print(knn.classify(
+                json.loads(sys.argv[4]),
+                answerer
+            ))
 
-    knn.load_from_csv(sys.argv[2])
+        case "test":
+            knn: KNN = KNN(int(sys.argv[3]), lambda x: math.sqrt(
+                x["Family Size"] ** 2 +
+                x["GeoID"] ** 2 +
+                x["Basket Units"] ** 2 +
+                x["Basket Dollar"] ** 2
+            ))
 
-    print(f"""Accuracy: {knn.test(
-        pd.read_csv(sys.argv[4]),
-        answerer
-    )}""")
+            knn.load_from_csv(sys.argv[2])
+
+            print(f"""Accuracy: {knn.test(
+                pd.read_csv(sys.argv[4]),
+                answerer
+            )}""")
