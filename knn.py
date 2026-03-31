@@ -164,9 +164,7 @@ if __name__ == "__main__":
     match sys.argv[1]:
         case "train":
             knn: KNN = KNN(0, lambda x: math.sqrt(
-                x["Family Size"] ** 2 +
-                x["GeoID"] ** 2 +
-                x["Basket Units"] ** 2 +
+                x["Income"] **2 +
                 x["Basket Dollar"] ** 2
             ))
 
@@ -179,9 +177,7 @@ if __name__ == "__main__":
 
         case "classify":
             knn: KNN = KNN(int(sys.argv[3]), lambda x: math.sqrt(
-                x["Family Size"] ** 2 +
-                x["GeoID"] ** 2 +
-                x["Basket Units"] ** 2 +
+                x["Income"] **2 +
                 x["Basket Dollar"] ** 2
             ))
 
@@ -194,9 +190,7 @@ if __name__ == "__main__":
 
         case "test":
             knn: KNN = KNN(int(sys.argv[3]), lambda x: math.sqrt(
-                x["Family Size"] ** 2 +
-                x["GeoID"] ** 2 +
-                x["Basket Units"] ** 2 +
+                x["Income"] **2 +
                 x["Basket Dollar"] ** 2
             ))
 
