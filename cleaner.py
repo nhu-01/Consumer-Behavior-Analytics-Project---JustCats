@@ -10,7 +10,7 @@ import sys
 # Verify commandline arguments
 
 if len(sys.argv) < 3:
-    print(f"This file is used like this: 'python3 {__file__} [data.csv] [clean.py]'")
+    print(f"This file is used like this: 'python3 {__file__} [data.csv] [clean.csv]'")
     quit()
 
 # Load the file
